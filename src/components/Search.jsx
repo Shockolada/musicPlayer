@@ -1,4 +1,5 @@
 import React, { PureComponent } from "react";
+import { TextField } from "@material-ui/core";
 
 class Search extends PureComponent {
   constructor(props) {
@@ -18,14 +19,16 @@ class Search extends PureComponent {
   render() {
     return (
       <form>
-        <input
-          placeholder="Search for..."
+        <TextField
+          label="Search"
           ref={input => (this.search = input)}
           onChange={this.handleInputChange}
         />
         <p>{this.state.result}</p>
         {this.state.result === "" ? "Пусто" : "Не пусто"}
-        {this.props.visible && <p style={{color: "red"}}>{this.props.text}</p>}
+        {this.props.visible && (
+          <p style={{ color: "red" }}>{this.props.text}</p>
+        )}
       </form>
     );
   }
