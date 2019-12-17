@@ -31,11 +31,18 @@ class SongItem extends PureComponent {
     };
   }
 
-  handleSongPlay = () => {
-    this.state.play ? this.player.pause() : this.player.play();
+  handlePlayBtn = () => {
     this.setState({
       play: !this.state.play
     });
+  };
+
+  handleSliderListener = (event, newValue) => {
+    this.setState({
+      currentTime: newValue,
+      play: false
+    });
+    this.player.currentTime = newValue;
   };
 
   componentDidMount() {
@@ -53,13 +60,10 @@ class SongItem extends PureComponent {
     });
   }
 
-  componentDidUpdate() {
-    this.player.addEventListener("timeupdate", e => {
-      this.setState({
-        currentTime: e.target.currentTime,
-        duration: e.target.duration
-      });
-    });
+  componentDidUpdate(prevState) {
+    if (this.state.play !== prevState.play) {
+      this.state.play ? this.player.play() : this.player.pause();
+    }
   }
 
   componentWillUnmount() {
@@ -77,7 +81,7 @@ class SongItem extends PureComponent {
     return (
       <Card className={classes.root}>
         <div className={classes.icon}>
-          <IconButton onClick={this.handleSongPlay}>
+          <IconButton onClick={this.handlePlayBtn}>
             {play ? <Pause /> : <PlayArrow />}
           </IconButton>
         </div>
@@ -95,10 +99,15 @@ class SongItem extends PureComponent {
               {currentTime}
             </Typography>
             <Slider
+              onChange={this.handleSliderListener}
+              classes={{
+                track: classes.track,
+                thumb: classes.thumb
+              }}
               defaultValue={this.state.currentTime}
               value={this.state.currentTime}
               max={this.state.duration}
-              step={0.1}
+              step={1}
             />
             <Typography variant="caption" component="span">
               {duration}
@@ -108,7 +117,6 @@ class SongItem extends PureComponent {
             src={song}
             controls
             ref={ref => (this.player = ref)}
-            autoplay
             hidden
           />
         </div>

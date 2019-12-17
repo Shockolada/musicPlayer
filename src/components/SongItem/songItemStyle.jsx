@@ -21,5 +21,11 @@ export const songItemStyle = theme => ({
   },
   icon: {
     minWidth: 50,
-  }
+  },
+  // track: {
+  //   transition: "0.5s linear"
+  // },
+  // thumb: {
+  //   transition: "0.5s linear"
+  // },
 });
