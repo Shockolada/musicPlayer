@@ -1,5 +1,7 @@
 import React, { PureComponent } from "react";
-import { TextField } from "@material-ui/core";
+import { TextField, InputAdornment, IconButton } from "@material-ui/core";
+import SearchIcon from "@material-ui/icons/Search";
+
 
 class Search extends PureComponent {
   constructor(props) {
@@ -23,6 +25,15 @@ class Search extends PureComponent {
           label="Search"
           ref={input => (this.search = input)}
           onChange={this.handleInputChange}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton>
+                  <SearchIcon />
+                </IconButton>
+              </InputAdornment>
+            ),
+          }}
         />
         <p>{this.state.result}</p>
         {this.state.result === "" ? "Пусто" : "Не пусто"}
