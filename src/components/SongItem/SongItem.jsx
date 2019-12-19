@@ -9,8 +9,11 @@ import {
   Slider,
   Box
 } from "@material-ui/core";
-import PlayArrow from "@material-ui/icons/PlayArrow";
-import Pause from "@material-ui/icons/Pause";
+import VolumeButton from "../VolumeButton/VolumeButton";
+import {
+  PlayArrow,
+  Pause
+} from "@material-ui/icons";
 
 function getTime(time) {
   if (!isNaN(time)) {
@@ -29,18 +32,27 @@ class SongItem extends PureComponent {
       currentTime: 0,
       duration: 0
     };
+    this.handleVolumeListener = this.handleVolumeListener.bind(this);
   }
 
   handlePlayBtn = () => {
     this.setState({
-      play: !this.state.play
+      play: !this.state.play,
+      volume: 100,
     });
+  };
+
+  handleVolumeListener = (value) => {
+    this.setState({
+      volume: value,
+    });
+    this.player.volume = value / 100
   };
 
   handleSliderListener = (event, newValue) => {
     this.setState({
       currentTime: newValue,
-      play: false
+      // play: false
     });
     this.player.currentTime = newValue;
   };
@@ -64,6 +76,8 @@ class SongItem extends PureComponent {
     if (this.state.play !== prevState.play) {
       this.state.play ? this.player.play() : this.player.pause();
     }
+    // if (this.state.volume !== prevState.volume) {
+    // }
   }
 
   componentWillUnmount() {
@@ -85,6 +99,7 @@ class SongItem extends PureComponent {
             {play ? <Pause /> : <PlayArrow />}
           </IconButton>
         </div>
+        <VolumeButton onChange={this.handleVolumeListener} volume={this.state.volume} />
         <div className={classes.content}>
           <div>
             <Typography variant="body1" component="span">
@@ -107,7 +122,7 @@ class SongItem extends PureComponent {
               defaultValue={this.state.currentTime}
               value={this.state.currentTime}
               max={this.state.duration}
-              step={1}
+              step={0.1}
             />
             <Typography variant="caption" component="span">
               {duration}

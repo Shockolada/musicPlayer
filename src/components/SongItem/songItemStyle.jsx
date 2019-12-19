@@ -3,7 +3,7 @@ export const songItemStyle = theme => ({
     display: "flex",
     alignItems: "center",
     height: 80,
-    overflow: "hidden"
+    overflow: "unset"
   },
   cover: {
     height: "100%",
