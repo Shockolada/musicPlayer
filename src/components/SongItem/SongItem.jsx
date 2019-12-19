@@ -30,15 +30,15 @@ class SongItem extends PureComponent {
     this.state = {
       play: false,
       currentTime: 0,
-      duration: 0
+      duration: 0,
+      volume: 100
     };
-    this.handleVolumeListener = this.handleVolumeListener.bind(this);
+    // this.handleVolumeListener = this.handleVolumeListener.bind(this);
   }
 
   handlePlayBtn = () => {
     this.setState({
       play: !this.state.play,
-      volume: 100,
     });
   };
 
