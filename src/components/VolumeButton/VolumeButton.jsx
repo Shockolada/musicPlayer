@@ -36,7 +36,7 @@ class VolumeButton extends PureComponent {
     const volume = this.props.volume != null ? this.props.volume : 100;
     let volumeIcon = <VolumeUp />;
     switch (true) {
-      case 0:
+      case (volume === 0):
         volumeIcon = <VolumeOff />;
         break;
       case (volume < 30):
@@ -48,6 +48,7 @@ class VolumeButton extends PureComponent {
       default: 
         volumeIcon = <VolumeUp />;
     }
+    
     return (
       <div
         className={classes.root}
