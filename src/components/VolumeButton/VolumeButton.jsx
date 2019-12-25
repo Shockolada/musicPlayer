@@ -7,7 +7,7 @@ import {
 } from "@material-ui/icons";
 import { withStyles } from "@material-ui/styles";
 import { volumeButtonStyle } from "./volumeButtonStyle";
-import Slider from "@material-ui/core/Slider";
+import { IconButton, Slider } from "@material-ui/core";
 
 class VolumeButton extends PureComponent {
   constructor(props) {
@@ -21,7 +21,6 @@ class VolumeButton extends PureComponent {
   }
 
   hoverVolumeButton = value => {
-    console.log(value);
     this.setState({
       show: value
     });
@@ -32,36 +31,38 @@ class VolumeButton extends PureComponent {
   };
 
   render() {
-    const { classes } = this.props;
+    const { classes, mute } = this.props;
     const volume = this.props.volume != null ? this.props.volume : 100;
     let volumeIcon = <VolumeUp />;
     switch (true) {
-      case (volume === 0):
+      case mute:
         volumeIcon = <VolumeOff />;
         break;
-      case (volume < 30):
+      case volume < 30:
         volumeIcon = <VolumeMute />;
         break;
-      case (volume < 70):
+      case volume < 70:
         volumeIcon = <VolumeDown />;
         break;
-      default: 
+      default:
         volumeIcon = <VolumeUp />;
     }
-    
+
     return (
       <div
         className={classes.root}
         onMouseEnter={() => this.hoverVolumeButton(true)}
         onMouseLeave={() => this.hoverVolumeButton(false)}
       >
-        {volumeIcon}
+        <IconButton className={classes.button} onClick={this.props.handlerMute}>
+          {volumeIcon}
+        </IconButton>
         {this.state.show && (
           <div className={classes.sliderContainer}>
             <Slider
               name="volume"
               orientation="vertical"
-              value={volume}
+              value={mute ? 0 : volume}
               onChange={this.handleSliderChange}
               classes={{
                 root: classes.sliderRoot

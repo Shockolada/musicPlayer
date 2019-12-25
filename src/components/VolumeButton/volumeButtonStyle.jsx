@@ -5,8 +5,13 @@ export const volumeButtonStyle = theme => ({
   sliderContainer: {
     position: 'absolute',
     top: 0,
-    transform: 'translateY(-100%)',
+    left: '50%',
+    transform: 'translate(-50%, -100%)',
     height: 60,
-    padding: 8
+    padding: 8,
+  },
+  button: {
+    display: 'flex',
+    justifyContent: 'flex-start'
   }
 });
