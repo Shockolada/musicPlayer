@@ -67,6 +67,7 @@ class VolumeButton extends PureComponent {
               classes={{
                 root: classes.sliderRoot
               }}
+              color="secondary"
             />
           </div>
         )}

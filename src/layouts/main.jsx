@@ -2,6 +2,7 @@ import React, { PureComponent } from "react";
 import Search from "../components/Search";
 import SongItem from "../components/SongItem/SongItem";
 import { withStyles } from "@material-ui/styles";
+import { Button } from "@material-ui/core";
 
 const style = {};
 class Main extends PureComponent {
@@ -62,6 +63,7 @@ class Main extends PureComponent {
       <>
         <Search visible text="Я видимый!" />
         <SongItem data={this.state.song} />
+        <Button color="primary" variant="contained">Кнопка</Button>
       </>
     );
   }

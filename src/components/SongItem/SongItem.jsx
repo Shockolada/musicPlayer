@@ -7,7 +7,8 @@ import {
   Card,
   CardMedia,
   Slider,
-  Box
+  Box,
+  CardContent
 } from "@material-ui/core";
 import VolumeButton from "../VolumeButton/VolumeButton";
 import { PlayArrow, Pause } from "@material-ui/icons";
@@ -57,10 +58,10 @@ class SongItem extends PureComponent {
     if (this.props.data != prevProps.data) {
       this.player.addEventListener("timeupdate", e => {
         this.setState({
-          currentTime: e.target.currentTime,
+          currentTime: e.target.currentTime
         });
       });
-  
+
       this.player.addEventListener("canplay", e => {
         this.setState({
           currentTime: e.target.currentTime,
@@ -168,47 +169,58 @@ class SongItem extends PureComponent {
 
     return (
       <Card className={classes.root}>
-        <div className={classes.icon}>
-          <IconButton onClick={this.handlePlayBtn}>
-            {play ? <Pause /> : <PlayArrow />}
-          </IconButton>
-        </div>
-        <VolumeButton
-          onChange={this.handleVolumeListener} // Просто название
-          volume={this.state.volume}
-          mute={this.state.mute}
-          handlerMute={this.handleMuteListener}
-        />
-        <div className={classes.content}>
-          <div>
-            <Typography variant="body1" component="span">
-              {data.artist.name} -{" "}
-            </Typography>
-            <Typography variant="body1" component="span" color="textSecondary">
-              {data.title}
-            </Typography>
+        <CardContent className={classes.cardContent}>
+          <div className={classes.icon}>
+            <IconButton onClick={this.handlePlayBtn}>
+              {play ? <Pause /> : <PlayArrow />}
+            </IconButton>
           </div>
-          <Box display="flex" flexGrow="1">
-            <Typography variant="caption" component="span">
-              {currentTime}
-            </Typography>
-            <Slider
-              onChange={this.handleSliderListener}
-              classes={{
-                track: classes.track,
-                thumb: classes.thumb
-              }}
-              defaultValue={this.state.currentTime}
-              value={this.state.currentTime}
-              max={this.state.duration}
-              step={0.1}
+          
+          <div className={classes.content}>
+            <div>
+              <Typography variant="body1" component="span">
+                {data.artist.name} -{" "}
+              </Typography>
+              <Typography
+                variant="body1"
+                component="span"
+                color="textSecondary"
+              >
+                {data.title}
+              </Typography>
+            </div>
+            <Box display="flex" flexGrow="1" alignItems="center">
+              <Typography variant="caption" component="span">
+                {currentTime}
+              </Typography>
+              <Slider
+                onChange={this.handleSliderListener}
+                classes={{
+                  root: classes.sliderRoot,
+                }}
+                defaultValue={this.state.currentTime}
+                value={this.state.currentTime}
+                max={this.state.duration}
+                step={0.1}
+              />
+              <Typography variant="caption" component="span">
+                {duration}
+              </Typography>
+            </Box>
+            <audio
+              src={song}
+              controls
+              ref={ref => (this.player = ref)}
+              hidden
             />
-            <Typography variant="caption" component="span">
-              {duration}
-            </Typography>
-          </Box>
-          <audio src={song} controls ref={ref => (this.player = ref)} hidden />
-        </div>
+          </div>
+          <VolumeButton
+            onChange={this.handleVolumeListener} // Просто название
+            volume={this.state.volume}
+            mute={this.state.mute}
+            handlerMute={this.handleMuteListener}
+          />
+        </CardContent>
         <CardMedia
           className={classes.cover}
           image={data.album.cover_medium}

@@ -5,6 +5,11 @@ export const songItemStyle = theme => ({
     height: 80,
     overflow: "unset"
   },
+  cardContent: {
+    display: "flex",
+    alignItems: "center",
+    flexGrow: 1
+  },
   cover: {
     height: "100%",
     width: "80px",
@@ -22,10 +27,10 @@ export const songItemStyle = theme => ({
   icon: {
     minWidth: 50,
   },
-  // track: {
-  //   transition: "0.5s linear"
-  // },
-  // thumb: {
-  //   transition: "0.5s linear"
-  // },
+  sliderRoot: {
+    // padding: `${theme.spacing(0)}` `${theme.spacing(1)}`,
+    // marginRight: theme.spacing(2),
+    marginLeft: theme.spacing(1.5),
+    marginRight: theme.spacing(1.5)
+  }
 });
