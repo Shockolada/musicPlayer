@@ -7,15 +7,13 @@ class Search extends PureComponent {
   constructor(props) {
     super(props);
 
-    this.state = {
-      result: ""
-    };
+    // this.state = {
+    //   result: ""
+    // };
   }
 
-  handleInputChange = () => {
-    this.setState({
-      result: this.search.value
-    });
+  handleInputChange = (value) => {
+    this.props.getSearchValue(value)
   };
 
   render() {
@@ -23,8 +21,7 @@ class Search extends PureComponent {
       <form>
         <TextField
           label="Search"
-          ref={input => (this.search = input)}
-          onChange={this.handleInputChange}
+          onChange={e => this.handleInputChange(e.target.value)}
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
@@ -35,11 +32,6 @@ class Search extends PureComponent {
             ),
           }}
         />
-        <p>{this.state.result}</p>
-        {this.state.result === "" ? "Пусто" : "Не пусто"}
-        {this.props.visible && (
-          <p style={{ color: "red" }}>{this.props.text}</p>
-        )}
       </form>
     );
   }

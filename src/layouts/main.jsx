@@ -13,7 +13,9 @@ class Main extends PureComponent {
       error: null,
       isLoaded: false,
       items: [],
-      song: null
+      song: null,
+      searchResult: null,
+      searchData: null
     };
   }
 
@@ -37,20 +39,6 @@ class Main extends PureComponent {
     //     }
     //   )
 
-    fetch("https://deezerdevs-deezer.p.rapidapi.com/search?q=eminem", {
-      method: "GET",
-      headers: {
-        "x-rapidapi-host": "deezerdevs-deezer.p.rapidapi.com",
-        "x-rapidapi-key": "21d6314bc0msh477205b9eee74bep15c810jsn86099ee4b1d7"
-      }
-    })
-      .then(response => {
-        console.log(response);
-      })
-      .catch(err => {
-        console.log(err);
-      });
-
     fetch("https://deezerdevs-deezer.p.rapidapi.com/track/72695088", {
       method: "GET",
       headers: {
@@ -60,7 +48,7 @@ class Main extends PureComponent {
     })
       .then(res => res.json())
       .then(response => {
-        console.log(response);
+        // console.log(response);
         this.setState({
           isLoaded: true,
           song: response
@@ -71,12 +59,47 @@ class Main extends PureComponent {
       });
   }
 
+  async getSearch(value) {
+    const result = await fetch(
+      "https://deezerdevs-deezer.p.rapidapi.com/search?q=" + value,
+      {
+        method: "GET",
+        headers: {
+          "x-rapidapi-host": "deezerdevs-deezer.p.rapidapi.com",
+          "x-rapidapi-key": "21d6314bc0msh477205b9eee74bep15c810jsn86099ee4b1d7"
+        }
+      }
+    )
+      .then(response => response.json())
+      .then(data => {
+        return data;
+      })
+      .catch(err => {
+        console.log(err);
+        return null;
+      });
+    console.log(result);
+    this.setState({ searchData: result });
+  }
+
+  getSearchValue = value => {
+    value != null && value !== "" && this.getSearch(value);
+  };
+
   render() {
     const { classes } = this.props;
+    const { searchData } = this.state;
+    const renderSearchList = (items, limit) =>
+      items.data.map((item, key) => <p>{item.title}</p>);
 
     return (
       <>
-        <Search visible text="Я видимый!" />
+        <Search
+          getSearchValue={this.getSearchValue}
+          visible
+          text="Я видимый!"
+        />
+        {searchData != null && searchData.total != null && searchData.total > 0 && renderSearchList(searchData)}
         <SongItem data={this.state.song} />
         <Button color="primary" variant="contained">
           Кнопка
