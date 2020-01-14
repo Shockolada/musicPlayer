@@ -36,6 +36,21 @@ class Main extends PureComponent {
     //       });
     //     }
     //   )
+
+    fetch("https://deezerdevs-deezer.p.rapidapi.com/search?q=eminem", {
+      method: "GET",
+      headers: {
+        "x-rapidapi-host": "deezerdevs-deezer.p.rapidapi.com",
+        "x-rapidapi-key": "21d6314bc0msh477205b9eee74bep15c810jsn86099ee4b1d7"
+      }
+    })
+      .then(response => {
+        console.log(response);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+
     fetch("https://deezerdevs-deezer.p.rapidapi.com/track/72695088", {
       method: "GET",
       headers: {
@@ -63,7 +78,9 @@ class Main extends PureComponent {
       <>
         <Search visible text="Я видимый!" />
         <SongItem data={this.state.song} />
-        <Button color="primary" variant="contained">Кнопка</Button>
+        <Button color="primary" variant="contained">
+          Кнопка
+        </Button>
       </>
     );
   }
