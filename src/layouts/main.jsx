@@ -2,7 +2,7 @@ import React, { PureComponent } from "react";
 import Search from "../components/Search";
 import SongItem from "../components/SongItem/SongItem";
 import { withStyles } from "@material-ui/styles";
-import { Button } from "@material-ui/core";
+import { Button, List, ListItem, ListItemText } from "@material-ui/core";
 
 const style = {};
 class Main extends PureComponent {
@@ -84,13 +84,28 @@ class Main extends PureComponent {
 
   getSearchValue = value => {
     value != null && value !== "" && this.getSearch(value);
+    this.setState({ searchResult: value });
   };
+
+  searchItemClick = id => {
+    // alert(id)
+    // console.log(this.state.searchResult)
+    const song = Object.values(this.state.searchData.data).find(item => item['id'] === id)
+    this.setState({ song });
+  }
 
   render() {
     const { classes } = this.props;
-    const { searchData } = this.state;
-    const renderSearchList = (items, limit) =>
-      items.data.map((item, key) => <p>{item.title}</p>);
+    const { searchData, searchResult } = this.state;
+    const renderSearchList = (items, limit) => (
+      <List component="nav" aria-label="secondary mailbox folders">
+        {items.data.slice(0, limit).map((item, key) => (
+          <ListItem key={item.id} button onClick={e => this.searchItemClick(item.id)}>
+            <ListItemText primary={item.title} />
+          </ListItem>
+        ))}
+      </List>
+    );
 
     return (
       <>
@@ -99,7 +114,12 @@ class Main extends PureComponent {
           visible
           text="Я видимый!"
         />
-        {searchData != null && searchData.total != null && searchData.total > 0 && renderSearchList(searchData)}
+        {searchData != null &&
+          searchData.total != null &&
+          searchData.total > 0 &&
+          searchResult != null &&
+          searchResult !== "" &&
+          renderSearchList(searchData, 5)}
         <SongItem data={this.state.song} />
         <Button color="primary" variant="contained">
           Кнопка
