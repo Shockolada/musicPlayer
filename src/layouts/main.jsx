@@ -1,10 +1,16 @@
 import React, { PureComponent } from "react";
-import Search from "../components/Search";
+import Search from "../components/Search/Search";
 import SongItem from "../components/SongItem/SongItem";
 import { withStyles } from "@material-ui/styles";
-import { Button, List, ListItem, ListItemText } from "@material-ui/core";
+import {
+  Button,
+  List,
+  ListItem,
+  ListItemText,
+  Typography
+} from "@material-ui/core";
+import { mainStyle } from "./mainStyle";
 
-const style = {};
 class Main extends PureComponent {
   constructor(props) {
     super(props);
@@ -14,50 +20,12 @@ class Main extends PureComponent {
       isLoaded: false,
       items: [],
       song: null,
-      searchResult: null,
+      searchResult: "",
       searchData: null
     };
   }
 
-  async componentDidMount() {
-    // fetch("https://api.example.com/items")
-    //   .then(res => res.json())
-    //   .then(
-    //     (result) => {
-    //       this.setState({
-    //         isLoaded: true,
-    //         items: result.items
-    //       });
-    //     },
-    //     // Примечание: важно обрабатывать ошибки именно здесь, а не в блоке catch(),
-    //     // чтобы не перехватывать исключения из ошибок в самих компонентах.
-    //     (error) => {
-    //       this.setState({
-    //         isLoaded: true,
-    //         error
-    //       });
-    //     }
-    //   )
-
-    fetch("https://deezerdevs-deezer.p.rapidapi.com/track/72695088", {
-      method: "GET",
-      headers: {
-        "x-rapidapi-host": "deezerdevs-deezer.p.rapidapi.com",
-        "x-rapidapi-key": "1008ad51f9msh2ad23c0d6733bebp1f0283jsn9f7cf7f5988b"
-      }
-    })
-      .then(res => res.json())
-      .then(response => {
-        // console.log(response);
-        this.setState({
-          isLoaded: true,
-          song: response
-        });
-      })
-      .catch(err => {
-        console.log(err);
-      });
-  }
+  async componentDidMount() {}
 
   async getSearch(value) {
     const result = await fetch(
@@ -90,43 +58,41 @@ class Main extends PureComponent {
   searchItemClick = id => {
     // alert(id)
     // console.log(this.state.searchResult)
-    const song = Object.values(this.state.searchData.data).find(item => item['id'] === id)
-    this.setState({ song });
-  }
+    const song = Object.values(this.state.searchData.data).find(
+      item => item["id"] === id
+    );
+    this.setState({ 
+      song,
+      searchResult: ""
+     });
+  };
 
   render() {
     const { classes } = this.props;
-    const { searchData, searchResult } = this.state;
-    const renderSearchList = (items, limit) => (
-      <List component="nav" aria-label="secondary mailbox folders">
-        {items.data.slice(0, limit).map((item, key) => (
-          <ListItem key={item.id} button onClick={e => this.searchItemClick(item.id)}>
-            <ListItemText primary={item.title} />
-          </ListItem>
-        ))}
-      </List>
-    );
+    const { searchData, searchResult, song } = this.state;
 
     return (
-      <>
-        <Search
-          getSearchValue={this.getSearchValue}
-          visible
-          text="Я видимый!"
-        />
-        {searchData != null &&
-          searchData.total != null &&
-          searchData.total > 0 &&
-          searchResult != null &&
-          searchResult !== "" &&
-          renderSearchList(searchData, 5)}
-        <SongItem data={this.state.song} />
-        <Button color="primary" variant="contained">
-          Кнопка
-        </Button>
-      </>
+      <div className={classes.root}>
+        <div className={classes.header}>
+          <Search
+            searchItemClick={this.searchItemClick}
+            searchData={searchData}
+            searchResult={searchResult}
+            getSearchValue={this.getSearchValue}
+            visible
+            text="Я видимый!"
+          />
+          
+
+          {song != null && (
+            <div className={classes.footerSong}>
+              <SongItem data={this.state.song} />
+            </div>
+          )}
+        </div>
+      </div>
     );
   }
 }
 
-export default withStyles(style)(Main);
+export default withStyles(mainStyle)(Main);

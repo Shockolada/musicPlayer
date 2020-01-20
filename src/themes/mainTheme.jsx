@@ -25,14 +25,13 @@ const mainTheme = createMuiTheme({
     icon: "#fff"
   },
   overrides: {
-    // MuiIconButton: {
-    //   root: {
-    //     color: "#fff",
-    //     "&:hover": {
-    //       backgroundColor: "rgba(255, 255, 255, 0.08)"
-    //     }
-    //   }
-    // }
+    MuiInput: {
+      underline: {
+        "&::before": {
+          borderColor: "#fff"
+        }
+      }
+    }
   },
   props: {
     MuiIconButton: {
